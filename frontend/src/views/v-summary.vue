@@ -428,16 +428,18 @@ export default {
         const res = [];
 
         // filtering
-        repo.users.forEach((user) => {
-          if (this.isMatchSearchedUser(this.filterSearch, user)) {
-            this.getUserCommits(user, this.filterSinceDate, this.filterUntilDate);
-            if (this.filterTimeFrame === 'week') {
-              this.splitCommitsWeek(user, this.filterSinceDate, this.filterUntilDate);
+        if (this.filterSearch !== '') {
+          repo.users.forEach((user) => {
+            if (this.isMatchSearchedUser(this.filterSearch, user)) {
+              this.getUserCommits(user, this.filterSinceDate, this.filterUntilDate);
+              if (this.filterTimeFrame === 'week') {
+                this.splitCommitsWeek(user, this.filterSinceDate, this.filterUntilDate);
+              }
+              this.updateCheckedFileTypeContribution(user);
+              res.push(user);
             }
-            this.updateCheckedFileTypeContribution(user);
-            res.push(user);
-          }
-        });
+          });
+        }
 
         if (res.length) {
           full.push(res);
