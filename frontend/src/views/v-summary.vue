@@ -3,7 +3,7 @@
   form.summary-picker.mui-form--inline(onsubmit="return false;")
     .summary-picker__section
       .mui-textfield.search_box
-        input(type="text", v-on:change="updateFilterSearch", v-model="filterSearch")
+        input(type="text", v-on:change="updateFilterSearch", v-model="filterSearch", :disabled="isDisabled")
         label search
         button.mui-btn.mui-btn--raised(type="button", v-on:click.prevent="resetFilterSearch") x
       .mui-select.grouping
@@ -276,6 +276,10 @@ export default {
         return this.tmpFilterUntilDate;
       }
       return this.maxDate;
+    },
+
+    isDisabled() {
+      return this.isShowingAll;
     },
 
     ...mapState(['mergedGroups']),
