@@ -73,6 +73,13 @@
             v-bind:disabled="filterGroupSelection === 'groupByNone'"
           )
           span merge all groups
+        label.filter-showall
+          input.mui-checkbox(
+            type="checkbox",
+            v-model="filterShowAll",
+            v-on:change="toggleShowAll"
+          )
+          span show all
   .error-message-box(v-if="Object.entries(errorMessages).length")
     .error-message-box__close-button(v-on:click="dismissTab($event)") &times;
     .error-message-box__message The following issues occurred when analyzing the following repositories:
@@ -118,6 +125,7 @@
     v-bind:avg-contribution-size="avgContributionSize",
     v-bind:filter-group-selection="filterGroupSelection",
     v-bind:filter-breakdown="filterBreakdown",
+    v-bind:filter-showall="filterShowall",
     v-bind:filter-time-frame="filterTimeFrame",
     v-bind:filter-since-date="filterSinceDate",
     v-bind:filter-until-date="filterUntilDate",
@@ -168,6 +176,7 @@ export default {
       fileTypeColors: {},
       isSafariBrowser: /.*Version.*Safari.*/.test(navigator.userAgent),
       filterGroupSelectionWatcherFlag: false,
+      isShowingAll: false,
     };
   },
   watch: {
@@ -390,7 +399,7 @@ export default {
     },
 
     isMatchSearchedUser(filterSearch, user) {
-      return !filterSearch || filterSearch.toLowerCase()
+      return this.isShowingAll || !filterSearch || filterSearch.toLowerCase()
           .split(' ')
           .filter(Boolean)
           .some((param) => user.searchPath.includes(param));
@@ -400,6 +409,15 @@ export default {
       // Reset the file type filter
       if (this.checkedFileTypes.length !== this.fileTypes.length) {
         this.checkedFileTypes = this.fileTypes.slice();
+      }
+      this.getFiltered();
+    },
+
+    toggleShowAll() {
+      if (this.isShowingAll === true) {
+        this.isShowingAll = false;
+      } else {
+        this.isShowingAll = true;
       }
       this.getFiltered();
     },
@@ -428,7 +446,7 @@ export default {
         const res = [];
 
         // filtering
-        if (this.filterSearch !== '') {
+        if (this.isShowingAll || this.filterSearch !== '') {
           repo.users.forEach((user) => {
             if (this.isMatchSearchedUser(this.filterSearch, user)) {
               this.getUserCommits(user, this.filterSinceDate, this.filterUntilDate);
