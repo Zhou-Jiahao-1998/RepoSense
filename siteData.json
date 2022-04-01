@@ -71,7 +71,6 @@
         "github-pages": "GitHub Pages",
         "stale-pull-requests": "Stale pull requests",
         "codecov": "Codecov",
-        "appveyor": "Appveyor",
         "surge-sh": "Surge.sh"
       },
       "headingKeywords": {}
@@ -155,7 +154,8 @@
       "title": "Appendix: Style guides",
       "headings": {
         "appendix-style-guides": "Appendix: Style guides",
-        "note-on-ternary-operators": "Note on Ternary Operators:"
+        "note-on-ternary-operators": "Note on Ternary Operators:",
+        "additional-javadoc-requirements": "Additional Javadoc requirements:"
       },
       "headingKeywords": {}
     },
